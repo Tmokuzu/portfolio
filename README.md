@@ -22,6 +22,16 @@
           - ButtonChangeSerial.cs  ...  ArduinoからSerial通信で送られてきた値によってタッチフィードバックを変化
           - OSCReceive.cs  ...  OSC通信で値を取得
           - SerialReceive.cs  ...  Serial通信で値を取得
+         
+  - Mitsuba3_MMAP/  ...  再帰透過光学素子(MMAP)のCGシミュレーションに関する研究
+    - Output/  ...  出力画像
+    - Python/  ...  Pythonコード
+      - first_render.py  ...  MMAPシーンをレンダリング
+      - myUtility.py  ...  自分用のUtility
+    - scenes/  ...  シーンファイル
+      - meshes/  ...  obj,plyファイル
+      - textures/ ...  光源用画像
+      - MMAP.xml  ...  Mitsuba用MMAPシーン
 
 # Verified version
 - Unity 2021.3.23
