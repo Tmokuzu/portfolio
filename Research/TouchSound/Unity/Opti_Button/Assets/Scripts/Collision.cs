@@ -20,25 +20,7 @@ public class Collision : MonoBehaviour
     {
         Transform myTransform = this.transform;
         point = myTransform.position;
-        /*
-        switch (Col){
-            case "Space1": 
-                Col_Button = 1;
-                break;
-            case "Space2": 
-                Col_Button = 2;
-                break;
-            case "Space3": 
-                Col_Button = 3;
-                break;
-            case "Space4": 
-                Col_Button = 4;
-                break;
-            default : 
-                Col_Button = 0;
-                break;
-        }
-        */
+        
         Col_Button = Col;
         //Debug.Log(Col_Button);
     }
