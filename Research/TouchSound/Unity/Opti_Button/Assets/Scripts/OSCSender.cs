@@ -10,7 +10,8 @@ public class OSCSender : MonoBehaviour
     private float distan;
 
     [SerializeField] MeasureDistance dis;
-    [SerializeField] Collision col; 
+    [SerializeField] Collision col;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,20 +27,9 @@ public class OSCSender : MonoBehaviour
         this.Set_Distance();
         this.Set_Button();
         
-        //button_num = Int32.Parse(BUTTON.Replace("Space", ""));
-
-        //Debug.Log(BUTTON.Replace("Space", ""));
-        //if (BUTTON != null) button_num = int.Parse(BUTTON[BUTTON.Length - 1]);
-        //else button_num = 0;
-        //Debug.Log(BUTTON[BUTTON.Length - 1]);
-        //distans[Int32.Parse(BUTTON.Replace("Space", ""))-1] = distan;
-
-        //if(BUTTON == "Space1" | BUTTON == "Space2") distan = 0;
         List<object> values = new List<object>();
         values.AddRange(new object[]{distan});
-        OSCHandler.Instance.SendMessageToClient("Puredata", "/Position", values);
-        //Debug.Log(distan);
-        //Debug.Log(BUTTON);
+        OSCHandler.Instance.SendMessageToClient("Puredata", "/Position", values); //OSCでPureDataクライアントにPositionを送信
     }
 
     private void Set_Distance()
