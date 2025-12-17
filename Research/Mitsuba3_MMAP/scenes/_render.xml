@@ -1,0 +1,93 @@
+<scene version="3.0.0">
+    <default name="spp" value="1024" />
+    <default name="res" value="1024" />
+    <default name="max_depth" value="6" />
+    <default name="integrator" value="path" />
+
+    <integrator type="$integrator">
+        <integer name="max_depth" value="$max_depth" />
+    </integrator>
+    
+    <sensor type="perspective" id="sensor">
+        <float name="near_clip" value="10" />
+        <float name="far_clip" value="100" />
+        <float name="focus_distance" value="300" />
+        <string name="focal_length" value="35" />
+        
+        <transform name="to_world">
+            <lookat origin="0, 0, -75" target="0, 0, -45" up="  0,   1,    0" />
+        </transform>
+
+        <sampler type="independent">  
+            <integer name="sample_count" value="1024" />
+        </sampler>
+        <film type="hdrfilm">
+            <integer name="width" value="2160" />
+            <integer name="height" value="1440" />
+            <rfilter type="gaussian" />
+        </film>
+    </sensor>
+
+    
+    
+    
+    <bsdf type="roughdielectric" id="MMAP_Glass">
+        <string name="distribution" value="ggx" />
+        <float name="int_ior" value="1.52" /> 
+        <float name="alpha" value="0.0006" />
+    </bsdf>
+    
+    <bsdf type="twosided" id="MMAP_Mirror">
+        <bsdf type="roughconductor" id="Mirror">
+            <string name="distribution" value="ggx" />
+            <rgb name="eta" value="0.87, 0.87, 0.87" /> 
+            <rgb name="k" value="0.87, 0.87, 0.87" /> 
+            <float name="alpha" value="0.0004" />
+        </bsdf>
+    </bsdf>
+
+    
+    
+    
+    <shape type="obj">
+        <string name="filename" value="../scenes/meshes/MMAP_glass.obj" />
+        <transform name="to_world">
+            <rotate x="1" angle="-45" />
+            <scale x="1" y="1" z="1" />
+        </transform>
+        <ref id="MMAP_Glass" />
+    </shape>
+    
+    
+    
+    <shape type="obj">
+        <string name="filename" value="../scenes/meshes/mmaps_nodetail_noglass.obj" />
+        <transform name="to_world">
+            <rotate x="1" angle="-45" />
+            <scale x="1" y="1" z="1" />
+        </transform>
+        <ref id="MMAP_Mirror" />
+    </shape>
+    
+    
+    
+    <shape type="obj" id="Dis">
+        <string name="filename" value="../scenes/meshes/Display.obj" />
+        <emitter type="area">
+            <texture name="radiance" type="bitmap">
+                <string name="filename" value="../scenes/textures/flower.png" />
+            </texture>
+        </emitter>
+        <bsdf type="diffuse" id="Display" />
+        <transform name="to_world">
+            <scale x="8" y="1" z="8" />
+            <rotate y="1" angle="180" />
+            <translate x="0" y="-45" z="0" />
+        </transform>
+    </shape>
+
+    
+    
+    
+    
+</scene>

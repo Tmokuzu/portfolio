@@ -1,14 +1,9 @@
 <scene version="3.0.0">
-    <default name="spp" value="1024"/>
-    <default name="res" value="1024"/>
-    <default name="max_depth" value="6"/>
-    <default name="integrator" value="path"/>
-
-    <integrator type='$integrator'>
-        <integer name="max_depth" value="$max_depth"/>
+    <integrator type="path">
+        <integer name="max_depth" value="6"/>
+        <integer name="samples_per_pass" value="8"/>
     </integrator>
-    
-    <sensor type="perspective" id="sensor">
+    <sensor type="perspective">
         <string name="fov_axis" value="smaller"/>
         <float name="near_clip" value="10"/>
         <float name="far_clip" value="2800"/>
@@ -19,17 +14,18 @@
                     target="0, 0, -79"
                     up    ="  0,   1,    0"/>
         </transform>
-
         <sampler type="independent">  <!-- ldsampler -->
-            <integer name="sample_count" value="$spp"/>
+            <integer name="sample_count" value="256"/>
         </sampler>
         <film type="hdrfilm">
-            <integer name="width" value="$res"/>
-            <integer name="height" value="$res"/>
+            <integer name="width" value="1024"/>
+            <integer name="height" value="1024"/>
             <rfilter type="gaussian"/>
         </film>
     </sensor>
-
+    <bsdf type="diffuse" id="box">
+        <spectrum name="reflectance" value="400:0.343, 404:0.445, 408:0.551, 412:0.624, 416:0.665, 420:0.687, 424:0.708, 428:0.723, 432:0.715, 436:0.71, 440:0.745, 444:0.758, 448:0.739, 452:0.767, 456:0.777, 460:0.765, 464:0.751, 468:0.745, 472:0.748, 476:0.729, 480:0.745, 484:0.757, 488:0.753, 492:0.75, 496:0.746, 500:0.747, 504:0.735, 508:0.732, 512:0.739, 516:0.734, 520:0.725, 524:0.721, 528:0.733, 532:0.725, 536:0.732, 540:0.743, 544:0.744, 548:0.748, 552:0.728, 556:0.716, 560:0.733, 564:0.726, 568:0.713, 572:0.74, 576:0.754, 580:0.764, 584:0.752, 588:0.736, 592:0.734, 596:0.741, 600:0.74, 604:0.732, 608:0.745, 612:0.755, 616:0.751, 620:0.744, 624:0.731, 628:0.733, 632:0.744, 636:0.731, 640:0.712, 644:0.708, 648:0.729, 652:0.73, 656:0.727, 660:0.707, 664:0.703, 668:0.729, 672:0.75, 676:0.76, 680:0.751, 684:0.739, 688:0.724, 692:0.73, 696:0.74, 700:0.737"/>
+    </bsdf>
     <bsdf type="diffuse" id="white">
         <spectrum name="reflectance" value="400:0.343, 404:0.445, 408:0.551, 412:0.624, 416:0.665, 420:0.687, 424:0.708, 428:0.723, 432:0.715, 436:0.71, 440:0.745, 444:0.758, 448:0.739, 452:0.767, 456:0.777, 460:0.765, 464:0.751, 468:0.745, 472:0.748, 476:0.729, 480:0.745, 484:0.757, 488:0.753, 492:0.75, 496:0.746, 500:0.747, 504:0.735, 508:0.732, 512:0.739, 516:0.734, 520:0.725, 524:0.721, 528:0.733, 532:0.725, 536:0.732, 540:0.743, 544:0.744, 548:0.748, 552:0.728, 556:0.716, 560:0.733, 564:0.726, 568:0.713, 572:0.74, 576:0.754, 580:0.764, 584:0.752, 588:0.736, 592:0.734, 596:0.741, 600:0.74, 604:0.732, 608:0.745, 612:0.755, 616:0.751, 620:0.744, 624:0.731, 628:0.733, 632:0.744, 636:0.731, 640:0.712, 644:0.708, 648:0.729, 652:0.73, 656:0.727, 660:0.707, 664:0.703, 668:0.729, 672:0.75, 676:0.76, 680:0.751, 684:0.739, 688:0.724, 692:0.73, 696:0.74, 700:0.737"/>
     </bsdf>
@@ -42,7 +38,27 @@
     <bsdf type="diffuse" id="light">
         <spectrum name="reflectance" value="400:0.78, 500:0.78, 600:0.78, 700:0.78"/>
     </bsdf>
-    
+    <!--
+    <shape type="obj">
+        <string name="filename" value="../Object/cbox-meshes/cbox_floor.obj"/>
+        <ref id="white"/>
+    </shape>
+    <shape type="obj">
+        <string name="filename" value="../Object/cbox-meshes/cbox_ceiling.obj"/>
+        <ref id="white"/>
+    </shape>
+    <shape type="obj">
+        <string name="filename" value="../Object/cbox-meshes/cbox_back.obj"/>
+        <ref id="white"/>
+    </shape>
+    <shape type="obj">
+        <string name="filename" value="../Object/cbox-meshes/cbox_greenwall.obj"/>
+        <ref id="green"/>
+    </shape>
+    <shape type="obj">
+        <string name="filename" value="../Object/cbox-meshes/cbox_redwall.obj"/>
+        <ref id="red"/>
+    </shape>-->
     <shape type="rectangle">
         <transform name="to_world">
             <scale x="70" y="70"/>
@@ -98,42 +114,40 @@
     <!--Materials-->
     <!--MMAP-Glass-->
     <bsdf type="dielectric" id="MMAP_Glass">
-        <float name="int_ior" value="1.52"/> <!--1.52-->
+        <float name="int_ior" value="1.52"/>
     </bsdf>
-    
     <!--MMAP-Mirror-->
     <bsdf type="twosided" id="MMAP_Mirror">
         <bsdf type="conductor">
-            <rgb name="eta" value="0.87, 0.87, 0.87"/> <!--0.87-->
-            <rgb name="k" value="0.87, 0.87, 0.87"/> <!--0.87-->
+            <rgb name="eta" value="0.87, 0.87, 0.87"/>
+            <rgb name="k" value="0.87, 0.87, 0.87"/>
         </bsdf>
     </bsdf>
 
     <!--Objects-->
     <!--MMAP-Glass-->
-    <shape type="obj">
+    <!--<shape type="obj">
         <string name="filename" value="../scenes/meshes/MMAP_glass.obj"/>
         <transform name="to_world">
             <rotate x="1" angle="-45"/>
         </transform>
         <ref id="MMAP_Glass"/>
-    </shape>
-    
+    </shape>-->
     <!--MMAP-Mirror-->
-    <shape type="obj">
+    <!--<shape type="obj">
         <string name="filename" value="../scenes/meshes/MMAP_mirror.obj"/>
         <transform name="to_world">
             <rotate x="1" angle="-45"/>
         </transform>
         <ref id="MMAP_Mirror"/>
-    </shape>
-
+    </shape>-->
     <!--Display-->
+    
     <shape type="obj">
-        <string name="filename" value="../scenes/meshes/Display.obj"/>
+        <string name="filename" value="../scenes/meshes/DisplayPanel_plane.obj"/>
         <emitter type="area">
             <texture name="radiance" type="bitmap">
-                <string name="filename" value="../scenes/textures/flower.png"/>
+                <string name="filename" value="../scenes/textures/image.png"/>
             </texture>
         </emitter>
         <bsdf type="diffuse"/>

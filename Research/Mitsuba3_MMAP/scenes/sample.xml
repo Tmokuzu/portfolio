@@ -1,0 +1,146 @@
+<scene version="3.0.0">
+    <integrator type="path">
+        <!-- Instantiate a path tracer with a max. path length of 8 -->
+        <integer name="max_depth" value="8"/>
+    </integrator>
+
+    <!-- Instantiate a perspective camera with 45 degrees field of view -->
+    <sensor type="perspective">
+        <!-- Rotate the camera around the Y axis by 180 degrees -->
+        <transform name="to_world">
+            <rotate y="1" angle="180"/>
+            <lookat origin="0, 0, -80" target="0, 0, -79" up="0, 1, 0"/>
+        </transform>
+        <string name="fov_axis" value="smaller"/>
+        <float name="near_clip" value="10"/>
+        <float name="far_clip" value="2800"/>
+        <float name="fov" value="45"/>
+        <!-- Render with 32 samples per pixel using a basic
+             independent sampling strategy -->
+        <sampler type="independent">
+            <integer name="sample_count" value="256"/>
+        </sampler>
+
+        <!-- Generate an EXR image at HD resolution -->
+        <film type="hdrfilm">
+            <integer name="width" value="1024"/>
+            <integer name="height" value="1024"/>
+            <rfilter type="gaussian"/>
+        </film>
+    </sensor>
+
+    <bsdf type="diffuse" id="gray">
+        <rgb name="reflectance" value="0.85, 0.85, 0.85"/>
+    </bsdf>
+
+    <bsdf type="diffuse" id="white">
+        <rgb name="reflectance" value="0.885809, 0.698859, 0.666422"/>
+    </bsdf>
+
+    <bsdf type="diffuse" id="green">
+        <rgb name="reflectance" value="0.105421, 0.37798, 0.076425"/>
+    </bsdf>
+
+    <bsdf type="diffuse" id="red">
+        <rgb name="reflectance" value="0.570068, 0.0430135, 0.0443706"/>
+    </bsdf>
+
+    <bsdf type="dielectric" id="glass"/>
+
+    <bsdf type="conductor" id="mirror"/>
+
+
+    <shape type="obj" id="floor">
+        <string name="filename" value="meshes/cbox_floor.obj"/>
+        <ref id="white"/>
+    </shape>
+
+    <shape type="obj" id="ceiling">
+        <string name="filename" value="meshes/cbox_ceiling.obj"/>
+        <ref id="white"/>
+    </shape>
+
+    <shape type="obj" id="back">
+        <string name="filename" value="meshes/cbox_back.obj"/>
+        <ref id="white"/>
+    </shape>
+
+    <shape type="obj" id="greenwall">
+        <string name="filename" value="meshes/cbox_greenwall.obj"/>
+        <ref id="green"/>
+    </shape>
+
+    <shape type="obj" id="redwall">
+        <string name="filename" value="meshes/cbox_redwall.obj"/>
+        <ref id="red"/>
+    </shape>
+
+
+    <!--Materials-->
+    <!--MMAP-Glass-->
+    <bsdf type="dielectric" id="MMAP_Glass">
+        <float name="int_ior" value="1.52"/>
+    </bsdf>
+    <!--MMAP-Mirror-->
+    <bsdf type="twosided" id="MMAP_Mirror">
+        <bsdf type="conductor">
+            <rgb name="eta" value="0.87, 0.87, 0.87"/>
+            <rgb name="k" value="0.87, 0.87, 0.87"/>
+        </bsdf>
+    </bsdf>
+
+
+
+    <!-- Add a dragon mesh made of MMAP glass (stored as OBJ file) -->
+    <!--Objects-->
+    <!--MMAP-Glass-->
+    <shape type="obj">
+        <string name="filename" value="../scenes/meshes/MMAP_glass.obj"/>
+        <transform name="to_world">
+            <rotate x="1" angle="-45"/>
+        </transform>
+        <ref id="MMAP_Glass"/>
+    </shape>
+    <!--MMAP-Mirror-->
+    <shape type="obj">
+        <string name="filename" value="../scenes/meshes/MMAP_mirror.obj"/>
+        <transform name="to_world">
+            <rotate x="1" angle="-45"/>
+        </transform>
+        <ref id="MMAP_Mirror"/>
+    </shape>
+    <!--Display-->
+    <shape type="obj">
+        <string name="filename" value="../scenes/meshes/Display.obj"/>
+        <emitter type="area">
+            <texture name="radiance" type="bitmap">
+                <string name="filename" value="../scenes/textures/image.png"/>
+            </texture>
+        </emitter>
+        <bsdf type="diffuse"/>
+        <transform name="to_world">
+            <scale x="8" y="1" z="8"/>
+            <rotate y="1" angle="180"/>
+            <translate x="0" y="-40" z="0"/>
+        </transform>
+    </shape>
+
+    
+    <!-- Add another mesh, this time, stored using Mitsuba's own
+         (compact) binary representation -->
+    
+    <!--<shape type="serialized">
+        <string name="filename" value="lightsource.serialized"/>
+        <transform name="toWorld">
+            <translate x="5" y="-3" z="1"/>
+        </transform>
+    -->
+
+        <!-- This mesh is an area emitter -->
+    <!--<emitter type="area">
+            <rgb name="radiance" value="100,400,100"/>
+        </emitter>
+    </shape> 
+    -->
+
+</scene>
